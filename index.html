@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="CAS Incontri" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="theme-color" content="#0a1628" />
+  <title>CAS — Registro Incontri Medici</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #0a1628;
+      --navy-mid: #1e3a5f;
+      --navy-light: #2a4f7e;
+      --blue-accent: #185fa5;
+      --blue-light: #e6f1fb;
+      --blue-mid: #b5d4f4;
+      --blue-text: #0c447c;
+      --green-bg: #eaf3de;
+      --green-text: #3b6d11;
+      --red-bg: #fcebeb;
+      --red-border: #f7c1c1;
+      --red-text: #791f1f;
+      --amber-bg: #faeeda;
+      --amber-border: #fac775;
+      --amber-text: #633806;
+      --radius-sm: 6px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-xl: 16px;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      background: #f0f2f5;
+      color: #1a1a1a;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 24px 16px 48px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 520px;
+      background: white;
+      border-radius: var(--radius-xl);
+      box-shadow: 0 2px 16px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+
+    /* ── Header ── */
+    .app-header {
+      background: var(--navy);
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .header-icon {
+      width: 44px; height: 44px;
+      background: var(--navy-mid);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      color: #7ecfff;
+      flex-shrink: 0;
+    }
+    .header-text h1 {
+      font-size: 16px; font-weight: 600;
+      color: #fff; letter-spacing: -0.01em;
+    }
+    .header-text p {
+      font-size: 12px; color: #8ab0d4; margin-top: 2px;
+    }
+
+    /* ── Body ── */
+    .app-body { padding: 20px 20px 24px; }
+
+    /* ── Section label ── */
+    .section-label {
+      font-size: 10.5px; font-weight: 600;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      margin-bottom: 10px;
+    }
+
+    /* ── Meeting type grid ── */
+    .meeting-types {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+      gap: 7px;
+      margin-bottom: 20px;
+    }
+    .type-btn {
+      border: 1.5px solid #e5e7eb;
+      background: #fff;
+      border-radius: var(--radius-md);
+      padding: 9px 10px;
+      cursor: pointer;
+      display: flex; align-items: center; gap: 7px;
+      color: #374151;
+      font-size: 13px; font-weight: 400;
+      font-family: inherit;
+      transition: border-color 0.13s, background 0.13s, color 0.13s;
+      line-height: 1.3;
+    }
+    .type-btn i { font-size: 15px; flex-shrink: 0; }
+    .type-btn:hover {
+      border-color: var(--blue-accent);
+      background: var(--blue-light);
+      color: var(--blue-text);
+    }
+    .type-btn.selected {
+      border-color: var(--blue-accent);
+      background: var(--blue-light);
+      color: var(--blue-text);
+      font-weight: 600;
+    }
+
+    /* ── Divider ── */
+    .divider { height: 1px; background: #f3f4f6; margin: 16px 0; }
+
+    /* ── Form ── */
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .form-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+    .form-group:last-child { margin-bottom: 0; }
+    .form-group label {
+      font-size: 12px; font-weight: 600;
+      color: #4b5563;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .required { color: #e24b4a; font-size: 13px; line-height: 1; }
+    .optional {
+      font-size: 11px; font-weight: 400;
+      color: #9ca3af; margin-left: 2px;
+    }
+    .form-group input,
+    .form-group textarea {
+      border: 1.5px solid #e5e7eb;
+      background: #fff;
+      border-radius: var(--radius-md);
+      padding: 9px 12px;
+      font-size: 14px;
+      color: #111827;
+      font-family: inherit;
+      transition: border-color 0.13s, box-shadow 0.13s;
+      width: 100%;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--blue-accent);
+      box-shadow: 0 0 0 3px rgba(24,95,165,0.12);
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: #9ca3af; }
+    .form-group textarea { resize: vertical; min-height: 74px; line-height: 1.5; }
+
+    /* ── Date ── */
+    .date-row {
+      font-size: 12px; color: #9ca3af;
+      text-align: right; margin-bottom: 16px;
+      display: flex; align-items: center; justify-content: flex-end; gap: 5px;
+    }
+    .date-row i { font-size: 13px; }
+
+    /* ── Submit ── */
+    .submit-btn {
+      width: 100%; padding: 12px 20px;
+      background: var(--navy);
+      color: #fff;
+      border: none; border-radius: var(--radius-md);
+      font-size: 14px; font-weight: 600;
+      cursor: pointer; font-family: inherit;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: background 0.15s, transform 0.1s;
+      margin-top: 6px;
+      letter-spacing: 0.01em;
+    }
+    .submit-btn:hover:not(:disabled) { background: var(--navy-mid); }
+    .submit-btn:active:not(:disabled) { transform: scale(0.99); }
+    .submit-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    /* ── Alert boxes ── */
+    .alert {
+      border-radius: var(--radius-md);
+      padding: 10px 13px;
+      font-size: 13px;
+      margin-bottom: 12px;
+      display: flex; align-items: flex-start; gap: 8px;
+      line-height: 1.5;
+    }
+    .alert i { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+    .alert-error { background: var(--red-bg); border: 1px solid var(--red-border); color: var(--red-text); }
+    .alert-warning { background: var(--amber-bg); border: 1px solid var(--amber-border); color: var(--amber-text); }
+    .alert-info { background: var(--blue-light); border: 1px solid var(--blue-mid); color: var(--blue-text); }
+
+    /* ── Setup section ── */
+    .setup-steps { margin-bottom: 14px; }
+    .step { display: flex; gap: 10px; margin-bottom: 9px; align-items: flex-start; }
+    .step-num {
+      min-width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--blue-accent); color: #fff;
+      font-size: 11px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 1px; flex-shrink: 0;
+    }
+    .step-txt { font-size: 13px; color: #374151; line-height: 1.55; }
+    .step-txt strong { font-weight: 600; color: #111827; }
+    .step-txt code {
+      background: #f3f4f6; border-radius: 4px;
+      padding: 1px 6px;
+      font-family: 'SF Mono', 'Fira Code', monospace; font-size: 11.5px;
+      color: #374151; word-break: break-all;
+    }
+    .config-box {
+      background: #f9fafb; border: 1px solid #e5e7eb;
+      border-radius: var(--radius-md); padding: 14px;
+      margin-bottom: 14px;
+    }
+    .config-field { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
+    .config-field:last-child { margin-bottom: 0; }
+    .config-label {
+      font-size: 10.5px; font-weight: 700; color: #6b7280;
+      text-transform: uppercase; letter-spacing: 0.07em;
+    }
+    .link-btn {
+      background: none; border: none; padding: 0; cursor: pointer;
+      color: var(--blue-accent); font-size: 13px; font-family: inherit;
+      display: inline-flex; align-items: center; gap: 4px;
+      text-decoration: underline; text-decoration-color: transparent;
+      transition: text-decoration-color 0.13s;
+    }
+    .link-btn:hover { text-decoration-color: var(--blue-accent); }
+
+    /* ── Success panel ── */
+    .success-panel { text-align: center; padding: 28px 16px; }
+    .success-icon {
+      width: 60px; height: 60px; background: var(--green-bg);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px; font-size: 28px; color: var(--green-text);
+    }
+    .success-panel h2 { font-size: 19px; font-weight: 700; margin-bottom: 6px; color: #111827; }
+    .success-panel .sub { font-size: 14px; color: #6b7280; margin-bottom: 20px; }
+    .summary-box {
+      background: #f9fafb; border: 1px solid #e5e7eb;
+      border-radius: var(--radius-md);
+      padding: 12px 16px; text-align: left;
+      font-size: 13px; margin-bottom: 20px;
+    }
+    .summary-row {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding: 5px 0; border-bottom: 1px solid #f3f4f6;
+      gap: 12px;
+    }
+    .summary-row:last-child { border-bottom: none; }
+    .summary-row .lbl { color: #6b7280; white-space: nowrap; }
+    .summary-row .val { font-weight: 600; text-align: right; color: #111827; }
+    .action-links {
+      display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+    }
+
+    /* ── Settings footer ── */
+    .settings-footer {
+      text-align: right; margin-top: 10px;
+    }
+
+    /* ── Spinner ── */
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .spinning { animation: spin 0.9s linear infinite; display: inline-block; }
+
+    /* ── Responsive ── */
+    @media (max-width: 420px) {
+      .form-row { grid-template-columns: 1fr; }
+      .meeting-types { grid-template-columns: 1fr 1fr; }
+      .page { padding: 12px 8px 40px; }
+      .app-body { padding: 16px 16px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="card">
+
+      <div class="app-header">
+        <div class="header-icon" aria-hidden="true"><i class="ti ti-stethoscope"></i></div>
+        <div class="header-text">
+          <h1>Registro incontri medici</h1>
+          <p>Comitato di Azione Sanitaria · Pordenone</p>
+        </div>
+      </div>
+
+      <div class="app-body">
+
+        <!-- ── SETUP SECTION ── -->
+        <div id="setup-section" style="display:none">
+          <div class="alert alert-info" style="margin-bottom:16px">
+            <i class="ti ti-info-circle"></i>
+            <div>
+              <strong>Collega Google Sheets</strong><br>
+              L'ID del foglio è già configurato. Devi solo creare il Web App con Apps Script per abilitare il salvataggio automatico.
+            </div>
+          </div>
+          <div class="setup-steps">
+            <div class="step">
+              <div class="step-num">1</div>
+              <div class="step-txt">
+                Apri il tuo <a href="https://docs.google.com/spreadsheets/d/104dLyQHLS4t9WdyqfQA2Za4qaymqKW2D3GzZZ00w9c8/edit" target="_blank" rel="noopener" class="link-btn" style="display:inline-flex"><i class="ti ti-external-link" style="font-size:12px"></i> Google Sheet</a> → <strong>Estensioni → Apps Script</strong>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">2</div>
+              <div class="step-txt">
+                Incolla questo codice e salva:<br>
+                <code>function doPost(e){var s=SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();var d=JSON.parse(e.postData.contents);s.appendRow([d.timestamp,d.type,d.member,d.doctor,d.notes]);return ContentService.createTextOutput("ok");}</code>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-num">3</div>
+              <div class="step-txt"><strong>Distribuisci → Nuova distribuzione → App web</strong> → Accesso: <strong>Chiunque</strong> → copia l'URL generato</div>
+            </div>
+            <div class="step">
+              <div class="step-num">4</div>
+              <div class="step-txt">Incolla l'URL qui sotto e salva</div>
+            </div>
+          </div>
+          <div class="config-box">
+            <div class="config-field">
+              <div class="config-label">ID Foglio (preconfigurato)</div>
+              <input type="text" value="104dLyQHLS4t9WdyqfQA2Za4qaymqKW2D3GzZZ00w9c8" readonly style="font-size:12px; color:#6b7280; font-family:monospace; background:#f3f4f6; border-color:#e5e7eb;" />
+            </div>
+            <div class="config-field">
+              <div class="config-label">Web App URL (Apps Script)</div>
+              <input type="url" id="webapp-input" placeholder="https://script.google.com/macros/s/.../exec" />
+            </div>
+          </div>
+          <button class="submit-btn" onclick="saveWebApp()">
+            <i class="ti ti-device-floppy"></i> Salva e vai al form
+          </button>
+          <div style="text-align:center; margin-top:10px">
+            <button class="link-btn" onclick="showForm(false)">Salta per ora →</button>
+          </div>
+        </div>
+
+        <!-- ── FORM SECTION ── -->
+        <div id="form-section" style="display:none">
+          <div id="error-box" style="display:none"></div>
+
+          <div class="date-row">
+            <i class="ti ti-calendar"></i>
+            <span id="date-display"></span>
+          </div>
+
+          <div class="section-label">Tipo di incontro <span class="required">*</span></div>
+          <div class="meeting-types">
+            <button class="type-btn" data-type="1 to 1" onclick="selectType(this)">
+              <i class="ti ti-users"></i> 1 to 1
+            </button>
+            <button class="type-btn" data-type="Incontro programmato" onclick="selectType(this)">
+              <i class="ti ti-calendar-event"></i> Programmato
+            </button>
+            <button class="type-btn" data-type="Incontro accompagnando un paziente" onclick="selectType(this)">
+              <i class="ti ti-wheelchair"></i> Con paziente
+            </button>
+            <button class="type-btn" data-type="Incontro casuale" onclick="selectType(this)">
+              <i class="ti ti-map-pin"></i> Casuale
+            </button>
+            <button class="type-btn" data-type="Presentazione" onclick="selectType(this)">
+              <i class="ti ti-presentation"></i> Presentazione
+            </button>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Membro CAS <span class="required">*</span></label>
+              <input type="text" id="cas-member" placeholder="Nome e cognome" autocomplete="name" />
+            </div>
+            <div class="form-group">
+              <label>Medico <span class="required">*</span></label>
+              <input type="text" id="doctor-name" placeholder="Dr. Nome Cognome" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Note <span class="optional">(facoltative)</span></label>
+            <textarea id="notes" placeholder="Osservazioni, argomenti trattati, follow-up…"></textarea>
+          </div>
+
+          <div id="no-webapp-banner" style="display:none">
+            <div class="alert alert-warning">
+              <i class="ti ti-alert-triangle"></i>
+              <span>Web App non configurato: i dati non verranno salvati su Sheets.
+                <button class="link-btn" style="color:var(--amber-text); font-weight:600;" onclick="showSetup()">Configura ora</button>
+              </span>
+            </div>
+          </div>
+
+          <button class="submit-btn" id="submit-btn" onclick="submitForm()">
+            <i class="ti ti-send"></i> Registra incontro
+          </button>
+
+          <div class="settings-footer">
+            <button class="link-btn" onclick="showSetup()" style="font-size:12px; color:#9ca3af;">
+              <i class="ti ti-settings" style="font-size:12px"></i> Impostazioni Google Sheets
+            </button>
+          </div>
+        </div>
+
+        <!-- ── SUCCESS SECTION ── -->
+        <div id="success-section" style="display:none">
+          <div class="success-panel">
+            <div class="success-icon"><i class="ti ti-check"></i></div>
+            <h2>Incontro registrato</h2>
+            <p class="sub" id="success-msg">I dati sono stati salvati nel foglio Google Sheets.</p>
+            <div class="summary-box" id="summary-box"></div>
+            <div class="action-links">
+              <button class="submit-btn" onclick="resetForm()" style="max-width:220px">
+                <i class="ti ti-plus"></i> Nuovo incontro
+              </button>
+              <a href="https://docs.google.com/spreadsheets/d/104dLyQHLS4t9WdyqfQA2Za4qaymqKW2D3GzZZ00w9c8/edit"
+                 target="_blank" rel="noopener"
+                 style="display:inline-flex; align-items:center; gap:6px; font-size:13px;
+                        color:var(--blue-accent); text-decoration:none; padding: 6px 0;">
+                <i class="ti ti-external-link" style="font-size:14px"></i> Apri Google Sheet
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /app-body -->
+    </div><!-- /card -->
+  </div><!-- /page -->
+
+  <script>
+    const SHEET_ID = '104dLyQHLS4t9WdyqfQA2Za4qaymqKW2D3GzZZ00w9c8';
+    let selectedType = null;
+    let webAppUrl = '';
+
+    try { webAppUrl = localStorage.getItem('cas_webapp_url') || ''; } catch(e) {}
+
+    function init() {
+      const now = new Date();
+      const dateEl = document.getElementById('date-display');
+      if (dateEl) {
+        dateEl.textContent = now.toLocaleDateString('it-IT', {
+          weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+        });
+      }
+      if (webAppUrl) {
+        showForm(true);
+      } else {
+        showSetup();
+      }
+    }
+
+    function showSetup() {
+      document.getElementById('setup-section').style.display = 'block';
+      document.getElementById('form-section').style.display = 'none';
+      document.getElementById('success-section').style.display = 'none';
+      const inp = document.getElementById('webapp-input');
+      if (inp && webAppUrl) inp.value = webAppUrl;
+    }
+
+    function showForm(hasWebApp) {
+      document.getElementById('setup-section').style.display = 'none';
+      document.getElementById('form-section').style.display = 'block';
+      document.getElementById('success-section').style.display = 'none';
+      document.getElementById('no-webapp-banner').style.display = hasWebApp ? 'none' : 'block';
+    }
+
+    function saveWebApp() {
+      const val = (document.getElementById('webapp-input').value || '').trim();
+      webAppUrl = val;
+      try { localStorage.setItem('cas_webapp_url', val); } catch(e) {}
+      showForm(!!val);
+    }
+
+    function selectType(btn) {
+      document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedType = btn.dataset.type;
+    }
+
+    function showError(msg) {
+      const c = document.getElementById('error-box');
+      c.innerHTML = '<div class="alert alert-error"><i class="ti ti-alert-circle"></i><span>' + msg + '</span></div>';
+      c.style.display = 'block';
+    }
+
+    function clearError() {
+      const c = document.getElementById('error-box');
+      c.innerHTML = '';
+      c.style.display = 'none';
+    }
+
+    async function submitForm() {
+      clearError();
+      const member = document.getElementById('cas-member').value.trim();
+      const doctor = document.getElementById('doctor-name').value.trim();
+      const notes  = document.getElementById('notes').value.trim();
+
+      if (!selectedType) { showError('Seleziona il tipo di incontro.'); return; }
+      if (!member) { showError('Il nome del Membro CAS è obbligatorio.'); document.getElementById('cas-member').focus(); return; }
+      if (!doctor) { showError('Il nome del medico è obbligatorio.'); document.getElementById('doctor-name').focus(); return; }
+
+      const btn = document.getElementById('submit-btn');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="ti ti-loader spinning"></i> Salvataggio…';
+
+      const now = new Date();
+      const timestamp = now.toLocaleString('it-IT', {
+        day: '2-digit', month: '2-digit', year: 'numeric',
+        hour: '2-digit', minute: '2-digit'
+      });
+
+      const row = { timestamp, type: selectedType, member, doctor, notes };
+
+      let saved = false;
+      if (webAppUrl) {
+        try {
+          await fetch(webAppUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(row)
+          });
+          saved = true;
+        } catch(e) {
+          saved = false;
+        }
+      }
+
+      btn.disabled = false;
+      btn.innerHTML = '<i class="ti ti-send"></i> Registra incontro';
+
+      document.getElementById('form-section').style.display = 'none';
+      document.getElementById('success-section').style.display = 'block';
+      document.getElementById('success-msg').textContent = saved
+        ? 'I dati sono stati salvati nel foglio Google Sheets.'
+        : webAppUrl
+          ? 'Invio tentato — verifica che il Web App sia attivo e accessibile.'
+          : 'Web App non configurato: i dati non sono stati salvati su Sheets.';
+
+      const noteRow = row.notes
+        ? '<div class="summary-row"><span class="lbl">Note</span><span class="val">' + escHtml(row.notes) + '</span></div>'
+        : '';
+
+      document.getElementById('summary-box').innerHTML =
+        '<div class="summary-row"><span class="lbl">Data e ora</span><span class="val">' + row.timestamp + '</span></div>' +
+        '<div class="summary-row"><span class="lbl">Tipo</span><span class="val">' + escHtml(row.type) + '</span></div>' +
+        '<div class="summary-row"><span class="lbl">Membro CAS</span><span class="val">' + escHtml(row.member) + '</span></div>' +
+        '<div class="summary-row"><span class="lbl">Medico</span><span class="val">' + escHtml(row.doctor) + '</span></div>' +
+        noteRow;
+    }
+
+    function resetForm() {
+      selectedType = null;
+      document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected'));
+      document.getElementById('cas-member').value = '';
+      document.getElementById('doctor-name').value = '';
+      document.getElementById('notes').value = '';
+      clearError();
+      showForm(!!webAppUrl);
+    }
+
+    function escHtml(str) {
+      return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    init();
+  </script>
+</body>
+</html>
