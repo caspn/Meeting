@@ -541,17 +541,9 @@
 
     function goToPortal(e, el) {
       e.preventDefault();
-      // If user authenticated in this session, carry the auth token over
-      if (sessionStorage.getItem('_cspAuth') === '1') {
-        // Already authenticated: just navigate
-        location.href = el.href;
-        return;
-      }
-      // Check if localStorage marks them as biometric-registered (i.e. has logged in before)
-      // In that case set the session key so portal skips login screen
-      if (localStorage.getItem('_cspBioOK') === '1' || localStorage.getItem('_cspBioReg')) {
-        sessionStorage.setItem('_cspAuth', '1');
-      }
+      // Write a short-lived localStorage bridge token the portal will pick up
+      // Valid for 10 seconds — enough to complete navigation
+      localStorage.setItem('_cspAuthBridge', Date.now().toString());
       location.href = el.href;
     }
 
