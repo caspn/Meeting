@@ -436,19 +436,11 @@
   function showApp() {
     overlay.style.display = "none";
     appEl.style.display   = "flex";
-    sessionStorage.setItem(SESS_KEY, "1");
+    localStorage.setItem(SESS_KEY, "1");
   }
   function showError(msg) { errMsg.textContent = msg; }
 
-  // Check sessionStorage (normal session) OR a bridge token set by a linked app
-  (function() {
-    if (sessionStorage.getItem(SESS_KEY) === "1") { showApp(); return; }
-    const bridge = localStorage.getItem("_cspAuthBridge");
-    if (bridge && (Date.now() - parseInt(bridge)) < 10000) {
-      localStorage.removeItem("_cspAuthBridge");
-      showApp();
-    }
-  })();
+  if (localStorage.getItem(SESS_KEY) === "1") showApp();
 
   let pwdVisible = false;
   document.getElementById("toggle-pwd").addEventListener("click", () => {
@@ -478,7 +470,7 @@
   input.addEventListener("keydown", e => { if (e.key==="Enter") tryLogin(); });
 
   document.getElementById("btn-logout").addEventListener("click", () => {
-    sessionStorage.removeItem(SESS_KEY);
+    localStorage.removeItem(SESS_KEY);
     appEl.style.display   = "none";
     overlay.style.display = "flex";
     input.value = ""; showError("");
