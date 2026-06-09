@@ -321,7 +321,7 @@
           <p>CAS Pordenone</p>
         </div>
         </div><!-- /header-left -->
-        <a href="https://caspn.github.io/App/" class="portal-btn">
+        <a href="https://caspn.github.io/App/" class="portal-btn" onclick="goToPortal(event, this)">
           <i class="ti ti-arrow-left" style="font-size:14px"></i> Torna al portale
         </a>
       </div>
@@ -415,7 +415,7 @@
       </div><!-- /app-body -->
     </div><!-- /card -->
     <div style="padding: 20px 16px; background: #f0f4f8; display:flex; justify-content:center;" class="portal-btn-mobile">
-      <a href="https://caspn.github.io/App/"
+      <a href="https://caspn.github.io/App/" onclick="goToPortal(event, this)"
          style="display:inline-flex; align-items:center; gap:7px;
                 background: var(--navy); color:#fff;
                 border-radius: var(--radius-md); padding: 11px 22px;
@@ -538,6 +538,23 @@
     }
 
     init();
+
+    function goToPortal(e, el) {
+      e.preventDefault();
+      // If user authenticated in this session, carry the auth token over
+      if (sessionStorage.getItem('_cspAuth') === '1') {
+        // Already authenticated: just navigate
+        location.href = el.href;
+        return;
+      }
+      // Check if localStorage marks them as biometric-registered (i.e. has logged in before)
+      // In that case set the session key so portal skips login screen
+      if (localStorage.getItem('_cspBioOK') === '1' || localStorage.getItem('_cspBioReg')) {
+        sessionStorage.setItem('_cspAuth', '1');
+      }
+      location.href = el.href;
+    }
+
   </script>
 </body>
 </html>
