@@ -10,38 +10,33 @@
   <meta name="theme-color" content="#015b99" />
   <title>Registro incontri con i Medici - CAS</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
     :root {
       --navy: #015b99;
-      --navy-mid: #014a7d;
-      --navy-light: #0169b0;
-      --blue-accent: #015b99;
-      --blue-light: #e3f0fa;
-      --blue-mid: #a8d0ef;
-      --blue-text: #013f6b;
-      --green-bg: #eaf3de;
-      --green-text: #3b6d11;
-      --red-bg: #fcebeb;
-      --red-border: #f7c1c1;
-      --red-text: #791f1f;
-      --amber-bg: #faeeda;
-      --amber-border: #fac775;
-      --amber-text: #633806;
-      --radius-sm: 6px;
-      --radius-md: 8px;
-      --radius-lg: 12px;
-      --radius-xl: 16px;
+      --navy2: #014a80;
+      --blue: #1d4ed8;
+      --ac: #3b82f6;
+      --g50: #f8fafc; --g100: #f1f5f9; --g200: #e2e8f0; --g300: #cbd5e1;
+      --g400: #94a3b8; --g500: #64748b; --g700: #334155;
+      --red: #ef4444; --rbg: #fef2f2;
+      --grn: #10b981; --gbg: #ecfdf5;
+      --sh: 0 4px 16px rgba(10,22,40,.10);
+      --r: 14px; --rs: 9px;
     }
 
     html, body {
-      height: 100%;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-      background: #f0f4f8;
-      color: #1a1a1a;
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom, #015b99 0%, #015b99 8%, #1a7ab8 22%, #d0e8f5 45%, #ffffff 70%);
+      background-attachment: fixed;
+      color: var(--navy);
+      min-height: 100vh;
+      line-height: 1.5;
     }
 
+    /* ── PAGE ── */
     .page {
       min-height: 100vh;
       display: flex;
@@ -49,237 +44,229 @@
       align-items: stretch;
     }
 
-    .card {
-      width: 100%;
-      background: white;
-      flex: 1;
-    }
-
-    /* ── Header ── */
+    /* ── HEADER ── */
     .app-header {
       background: var(--navy);
-      padding: 16px 32px;
+      padding: 0 32px;
+      height: 64px;
       display: flex;
       align-items: center;
       gap: 14px;
       width: 100%;
+      position: sticky;
+      top: 0;
+      z-index: 300;
     }
     .header-icon {
-      width: 48px; height: 48px;
-      background: #ffffff;
+      width: 44px; height: 44px;
+      background: #fff;
       border-radius: 10px;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
       overflow: hidden;
-      padding: 5px;
+      padding: 4px;
+      box-shadow: 0 1px 6px rgba(0,0,0,.18);
     }
+    .header-text { display: flex; flex-direction: column; justify-content: center; flex: 1; }
     .header-text h1 {
-      font-size: 16px; font-weight: 600;
-      color: #fff; letter-spacing: -0.01em;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem; font-weight: 700;
+      color: #fff; display: block; line-height: 1.25; margin: 0;
     }
     .header-text p {
-      font-size: 12px; color: rgba(255,255,255,0.65); margin-top: 2px;
+      font-size: .58rem; color: rgba(255,255,255,.45);
+      letter-spacing: 1.8px; text-transform: uppercase; margin-top: 1px;
     }
 
-    /* ── Body ── */
-    .app-body { padding: 28px 32px 36px; max-width: 760px; margin: 0 auto; width: 100%; }
+    /* ── BODY / CARD ── */
+    .app-body {
+      padding: 32px 32px 48px;
+      max-width: 760px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .form-card {
+      background: #fff;
+      border-radius: var(--r);
+      box-shadow: var(--sh);
+      padding: 32px 36px;
+      border: 1px solid var(--g200);
+    }
 
-    /* ── Section label ── */
+    /* ── SECTION LABEL ── */
     .section-label {
-      font-size: 10.5px; font-weight: 600;
-      color: #6b7280;
-      text-transform: uppercase;
-      letter-spacing: 0.09em;
-      margin-bottom: 10px;
+      font-size: .74rem; font-weight: 700;
+      letter-spacing: .8px; text-transform: uppercase;
+      margin-bottom: 11px; color: var(--blue);
     }
 
-    /* ── Meeting type grid ── */
+    /* ── DATE ── */
+    .date-row {
+      font-size: .78rem; color: var(--g400);
+      text-align: right; margin-bottom: 20px;
+      display: flex; align-items: center; justify-content: flex-end; gap: 5px;
+    }
+
+    /* ── MEETING TYPE GRID ── */
     .meeting-types {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 7px;
-      margin-bottom: 20px;
+      gap: 8px;
+      margin-bottom: 24px;
     }
     .type-btn {
-      border: 1.5px solid #e5e7eb;
-      background: #fff;
-      border-radius: var(--radius-md);
-      padding: 10px 6px;
+      border: 1.5px solid var(--g200);
+      background: var(--g50);
+      border-radius: var(--rs);
+      padding: 10px 8px;
       cursor: pointer;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
       gap: 6px;
-      color: #374151;
-      font-size: 12px; font-weight: 400;
-      font-family: inherit;
-      transition: border-color 0.13s, background 0.13s, color 0.13s;
-      line-height: 1.3;
+      color: var(--g700);
+      font-size: .75rem; font-weight: 500;
+      font-family: 'Outfit', sans-serif;
+      transition: border-color .13s, background .13s, color .13s;
       text-align: center;
-      min-height: 62px;
+      min-height: 66px;
+      line-height: 1.3;
     }
     .type-btn i { font-size: 20px; flex-shrink: 0; }
     .type-btn:hover {
-      border-color: var(--blue-accent);
-      background: var(--blue-light);
-      color: var(--blue-text);
+      border-color: var(--ac);
+      background: #eff6ff;
+      color: var(--blue);
     }
     .type-btn.selected {
-      border-color: var(--blue-accent);
-      background: var(--blue-light);
-      color: var(--blue-text);
-      font-weight: 600;
+      border-color: var(--navy);
+      background: #e0edf8;
+      color: var(--navy);
+      font-weight: 700;
     }
 
-    /* ── Divider ── */
-    .divider { height: 1px; background: #f3f4f6; margin: 16px 0; }
+    /* ── DIVIDER ── */
+    .divider { height: 1px; background: var(--g200); margin: 22px 0; }
 
-    /* ── Form ── */
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-    .form-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
-    .form-group:last-child { margin-bottom: 0; }
+    /* ── FORM FIELDS ── */
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
     .form-group label {
-      font-size: 12px; font-weight: 600;
-      color: #4b5563;
-      display: flex; align-items: center; gap: 4px;
+      font-size: .71rem; font-weight: 700;
+      letter-spacing: .9px; text-transform: uppercase;
+      color: var(--blue);
     }
-    .required { color: #e24b4a; font-size: 13px; line-height: 1; }
-    .optional {
-      font-size: 11px; font-weight: 400;
-      color: #9ca3af; margin-left: 2px;
-    }
+    .required { color: #ef4444; font-size: .85rem; }
+    .optional { font-size: .68rem; font-weight: 400; color: var(--g400); margin-left: 3px; text-transform: none; letter-spacing: 0; }
     .form-group input,
     .form-group select,
     .form-group textarea {
-      border: 1.5px solid #e5e7eb;
-      background: #fff;
-      border-radius: var(--radius-md);
-      padding: 9px 12px;
-      font-size: 14px;
-      color: #111827;
-      font-family: inherit;
-      transition: border-color 0.13s, box-shadow 0.13s;
+      border: 2px solid var(--g200);
+      background: var(--g50);
+      border-radius: var(--rs);
+      padding: 11px 14px;
+      font-size: .92rem;
+      color: var(--navy);
+      font-family: 'Outfit', sans-serif;
+      transition: border-color .15s, box-shadow .15s, background .15s;
       width: 100%;
+      outline: none;
     }
-    .form-group select {
-      appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 10px center;
-      padding-right: 34px;
-      cursor: pointer;
-    }
-    .form-group select option[value=""] { color: #9ca3af; }
     .form-group input:focus,
     .form-group select:focus,
     .form-group textarea:focus {
-      outline: none;
-      border-color: var(--blue-accent);
-      box-shadow: 0 0 0 3px rgba(24,95,165,0.12);
+      border-color: var(--ac);
+      box-shadow: 0 0 0 3px rgba(59,130,246,.12);
+      background: #fff;
     }
     .form-group input::placeholder,
-    .form-group textarea::placeholder { color: #9ca3af; }
-    .form-group textarea { resize: vertical; min-height: 74px; line-height: 1.5; }
-
-    /* ── Date ── */
-    .date-row {
-      font-size: 12px; color: #9ca3af;
-      text-align: right; margin-bottom: 16px;
-      display: flex; align-items: center; justify-content: flex-end; gap: 5px;
+    .form-group textarea::placeholder { color: var(--g400); }
+    .form-group select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 36px;
+      cursor: pointer;
     }
-    .date-row i { font-size: 13px; }
+    .form-group textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
 
-    /* ── Submit ── */
+    /* ── SUBMIT BUTTON ── */
     .submit-btn {
-      width: 100%; padding: 12px 20px;
+      width: 100%; padding: 13px 20px;
       background: var(--navy);
       color: #fff;
-      border: none; border-radius: var(--radius-md);
-      font-size: 14px; font-weight: 600;
-      cursor: pointer; font-family: inherit;
+      border: none; border-radius: var(--rs);
+      font-size: .92rem; font-weight: 600;
+      cursor: pointer; font-family: 'Outfit', sans-serif;
       display: flex; align-items: center; justify-content: center; gap: 8px;
-      transition: background 0.15s, transform 0.1s;
+      transition: background .15s, transform .1s, box-shadow .15s;
       margin-top: 6px;
-      letter-spacing: 0.01em;
+      letter-spacing: .02em;
     }
-    .submit-btn:hover:not(:disabled) { background: var(--navy-mid); }
-    .submit-btn:active:not(:disabled) { transform: scale(0.99); }
-    .submit-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+    .submit-btn:hover:not(:disabled) {
+      background: var(--navy2);
+      transform: translateY(-1px);
+      box-shadow: var(--sh);
+    }
+    .submit-btn:active:not(:disabled) { transform: scale(.99); }
+    .submit-btn:disabled { opacity: .45; cursor: not-allowed; transform: none !important; }
 
-    /* ── Alert boxes ── */
+    /* ── ALERTS ── */
     .alert {
-      border-radius: var(--radius-md);
-      padding: 10px 13px;
-      font-size: 13px;
-      margin-bottom: 12px;
-      display: flex; align-items: flex-start; gap: 8px;
-      line-height: 1.5;
+      border-radius: var(--rs); padding: 11px 14px;
+      font-size: .83rem; margin-bottom: 14px;
+      display: flex; align-items: flex-start; gap: 9px; line-height: 1.5;
     }
-    .alert i { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
-    .alert-error { background: var(--red-bg); border: 1px solid var(--red-border); color: var(--red-text); }
-    .alert-warning { background: var(--amber-bg); border: 1px solid var(--amber-border); color: var(--amber-text); }
-    .alert-info { background: var(--blue-light); border: 1px solid var(--blue-mid); color: var(--blue-text); }
+    .alert i { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+    .alert-error { background: var(--rbg); border: 1px solid #fecaca; color: #7f1d1d; }
 
-    /* ── Setup section ── */
-    .step-txt strong { font-weight: 600; color: #111827; }
-    .step-txt code {
-      background: #f3f4f6; border-radius: 4px;
-      padding: 1px 6px;
-      font-family: 'SF Mono', 'Fira Code', monospace; font-size: 11.5px;
-      color: #374151; word-break: break-all;
-    }
-    .config-field:last-child { margin-bottom: 0; }
-    .link-btn:hover { text-decoration-color: var(--blue-accent); }
-
-    /* ── Success panel ── */
-    .success-panel { text-align: center; padding: 28px 16px; }
+    /* ── SUCCESS PANEL ── */
+    .success-panel { text-align: center; padding: 36px 20px; }
     .success-icon {
-      width: 60px; height: 60px; background: var(--green-bg);
+      width: 64px; height: 64px; background: var(--gbg);
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 16px; font-size: 28px; color: var(--green-text);
+      margin: 0 auto 18px; font-size: 30px; color: var(--grn);
     }
-    .success-panel h2 { font-size: 19px; font-weight: 700; margin-bottom: 6px; color: #111827; }
-    .success-panel .sub { font-size: 14px; color: #6b7280; margin-bottom: 20px; }
+    .success-panel h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem; font-weight: 700;
+      margin-bottom: 6px; color: var(--navy);
+    }
+    .success-panel .sub { font-size: .85rem; color: var(--g400); margin-bottom: 22px; }
     .summary-box {
-      background: #f9fafb; border: 1px solid #e5e7eb;
-      border-radius: var(--radius-md);
-      padding: 12px 16px; text-align: left;
-      font-size: 13px; margin-bottom: 20px;
+      background: var(--g50); border: 1px solid var(--g200);
+      border-radius: var(--rs); padding: 14px 18px;
+      text-align: left; font-size: .85rem; margin-bottom: 22px;
     }
     .summary-row {
       display: flex; justify-content: space-between; align-items: flex-start;
-      padding: 5px 0; border-bottom: 1px solid #f3f4f6;
-      gap: 12px;
+      padding: 6px 0; border-bottom: 1px solid var(--g100); gap: 14px;
     }
     .summary-row:last-child { border-bottom: none; }
-    .summary-row .lbl { color: #6b7280; white-space: nowrap; }
-    .summary-row .val { font-weight: 600; text-align: right; color: #111827; }
-    .action-links {
-      display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
-    }
+    .summary-row .lbl { color: var(--g400); white-space: nowrap; font-weight: 500; }
+    .summary-row .val { font-weight: 700; text-align: right; color: var(--navy); }
 
-    /* ── Settings footer ── */
-
-    /* ── Spinner ── */
-    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-    .spinning { animation: spin 0.9s linear infinite; display: inline-block; }
-
-    /* ── Responsive ── */
+    /* ── RESPONSIVE ── */
     @media (max-width: 700px) {
-      .app-header { padding: 14px 16px; }
-      .app-body { padding: 18px 16px 24px; }
+      .app-header { padding: 0 16px; height: 56px; }
+      .header-text h1 { font-size: .9rem; }
+      .app-body { padding: 18px 12px 32px; }
+      .form-card { padding: 20px 16px; border-radius: 10px; }
       .meeting-types { grid-template-columns: 1fr 1fr; }
-      .type-btn { flex-direction: row; min-height: 48px; padding: 10px 12px; font-size: 13px; text-align: left; justify-content: flex-start; }
-      .type-btn i { font-size: 17px; }
+      .type-btn {
+        flex-direction: row; min-height: 50px;
+        padding: 11px 13px; font-size: .82rem;
+        text-align: left; justify-content: flex-start;
+      }
+      .type-btn i { font-size: 18px; }
     }
-    @media (max-width: 380px) {
+    @media (max-width: 400px) {
       .form-row { grid-template-columns: 1fr; }
     }
+
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .spinning { animation: spin .9s linear infinite; display: inline-block; }
   </style>
 </head>
 <body>
@@ -298,7 +285,8 @@
 
         <!-- ── FORM SECTION ── -->
         <div id="form-section" style="display:none">
-          <div id="error-box" style="display:none"></div>
+          <div class="form-card">
+    <div id="error-box" style="display:none"></div>
 
           <div class="date-row">
             <i class="ti ti-calendar"></i>
@@ -358,6 +346,8 @@
             <i class="ti ti-send"></i> Registra incontro
           </button>
         </div>
+
+    </div><!-- /form-card -->
 
         <!-- ── SUCCESS SECTION ── -->
         <div id="success-section" style="display:none">
